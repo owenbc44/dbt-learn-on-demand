@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+    - name: stripe
+      database: analytics
+      tables:
+        - name: payment
+          description: Raw payment data.
+          loaded_at_field: _batched_at
+          freshness:
+            warn_after: {count: 30, period: day}
+            error_after: {count: 100, period: day}
+          columns:
+            - name: id
+              description: Primary key for payments.
+              tests:
+                - unique
+                - not_null
